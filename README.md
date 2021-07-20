@@ -1,11 +1,11 @@
 ![](http://nepxion.gitee.io/discovery/docs/discovery-doc/Banner.png)
 
-# Discovery【探索】微服务企业级解决方案
-![Total visits](https://komarev.com/ghpvc/?username=Nepxion&label=total%20visits&color=blue)  [![Total lines](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license)](https://github.com/Nepxion/Discovery/blob/6.x.x/LICENSE)  [![Maven Central](https://img.shields.io/maven-central/v/com.nepxion/discovery.svg?label=maven%20central)](https://search.maven.org/artifact/com.nepxion/discovery)  [![Javadocs](http://www.javadoc.io/badge/com.nepxion/discovery-plugin-framework-starter.svg)](http://www.javadoc.io/doc/com.nepxion/discovery-plugin-framework-starter)  [![Build Status](https://travis-ci.org/Nepxion/Discovery.svg?branch=6.x.x)](https://travis-ci.org/Nepxion/Discovery)  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e39a24e1be740c58b83fb81763ba317)](https://www.codacy.com/project/HaojunRen/Discovery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nepxion/Discovery&amp;utm_campaign=Badge_Grade_Dashboard)  [![Stars](https://img.shields.io/github/stars/Nepxion/Discovery.svg?label=Stars&tyle=flat&logo=GitHub)](https://github.com/Nepxion/Discovery/stargazers)  [![Stars](https://gitee.com/Nepxion/Discovery/badge/star.svg?theme=gvp)](https://gitee.com/Nepxion/Discovery/stargazers)
+# Discovery【探索】云原生微服务解决方案
+![Total visits](https://visitor-badge.laobi.icu/badge?page_id=Nepxion&title=total%20visits)  [![Total lines](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?label=license)](https://github.com/Nepxion/Discovery/blob/6.x.x/LICENSE)  [![Maven Central](https://img.shields.io/maven-central/v/com.nepxion/discovery.svg?label=maven)](https://search.maven.org/artifact/com.nepxion/discovery)  [![Javadocs](http://www.javadoc.io/badge/com.nepxion/discovery-plugin-framework-starter.svg)](http://www.javadoc.io/doc/com.nepxion/discovery-plugin-framework-starter)  [![Build Status](https://travis-ci.org/Nepxion/Discovery.svg?branch=6.x.x)](https://travis-ci.org/Nepxion/Discovery)  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5c42eb719ef64def9cad773abd877e8b)](https://www.codacy.com/gh/Nepxion/Discovery/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Nepxion/Discovery&amp;utm_campaign=Badge_Grade)  [![Stars](https://img.shields.io/github/stars/Nepxion/Discovery.svg?label=Stars&tyle=flat&logo=GitHub)](https://github.com/Nepxion/Discovery/stargazers)  [![Stars](https://gitee.com/Nepxion/Discovery/badge/star.svg?theme=gvp)](https://gitee.com/Nepxion/Discovery/stargazers)
 
 [![Spring Boot](https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-dependencies.svg?label=Spring%20Boot&logo=Spring)](https://search.maven.org/artifact/org.springframework.boot/spring-boot-dependencies)  [![Spring Cloud](https://img.shields.io/maven-central/v/org.springframework.cloud/spring-cloud-dependencies.svg?label=Spring%20Cloud&logo=Spring)](https://search.maven.org/artifact/org.springframework.cloud/spring-cloud-dependencies)  [![Spring Cloud Alibaba](https://img.shields.io/maven-central/v/com.alibaba.cloud/spring-cloud-alibaba-dependencies.svg?label=Spring%20Cloud%20Alibaba&logo=Spring)](https://search.maven.org/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies)  [![Nepxion Discovery](https://img.shields.io/maven-central/v/com.nepxion/discovery.svg?label=Nepxion%20Discovery&logo=Anaconda)](https://search.maven.org/artifact/com.nepxion/discovery)
 
-[![Discovery DOC PPT](https://img.shields.io/badge/Discovery%20Doc-PPT-brightgreen?logo=Microsoft%20PowerPoint)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-ppt.html)  [![Discovery DOC PDF](https://img.shields.io/badge/Discovery%20Doc-PDF-brightgreen?logo=Adobe%20Acrobat%20Reader)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-pdf.html)  [![Discovery DOC HTML](https://img.shields.io/badge/Discovery%20Doc-HTML-brightgreen?logo=Microsoft%20Edge)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-html.html)
+[![Discovery PPT](https://img.shields.io/badge/Discovery%20-PPT-brightgreen?logo=Microsoft%20PowerPoint)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-ppt.html)  [![Discovery WIKI](https://img.shields.io/badge/Discovery%20-WIKI-brightgreen?logo=Microsoft%20Edge)](http://nepxion.gitee.io/discovery/)  [![Discovery Platform WIKI](https://img.shields.io/badge/Discovery%20Platform%20-WIKI-brightgreen?logo=Microsoft%20Edge)](http://nepxion.gitee.io/discoveryplatform)  [![Polaris WIKI](https://img.shields.io/badge/Polaris%20-WIKI-brightgreen?logo=Microsoft%20Edge)](http://polaris-paas.gitee.io/polaris-sdk)
 
 <a href="https://github.com/Nepxion" tppabs="#" target="_blank"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/github.png"></a>&nbsp;  <a href="https://gitee.com/Nepxion" tppabs="#" target="_blank"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/gitee.png"></a>&nbsp;  <a href="https://search.maven.org/search?q=g:com.nepxion" tppabs="#" target="_blank"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/maven.png"></a>&nbsp;  <a href="http://nepxion.gitee.io/discovery/docs/contact-doc/wechat.jpg" tppabs="#" target="_blank"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/wechat.png"></a>&nbsp;  <a href="http://nepxion.gitee.io/discovery/docs/contact-doc/dingding.jpg" tppabs="#" target="_blank"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/dingding.png"></a>&nbsp;  <a href="http://nepxion.gitee.io/discovery/docs/contact-doc/gongzhonghao.jpg" tppabs="#" target="_blank"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/gongzhonghao.png"></a>&nbsp;  <a href="mailto:1394997@qq.com" tppabs="#"><img width="25" height="25" src="http://nepxion.gitee.io/discovery/docs/icon-doc/email.png"></a>
 
@@ -50,51 +50,47 @@ Polaris为Discovery高级定制版，特色功能
 
 有商业版需求的企业和用户，请添加微信1394997，联系作者，洽谈合作事宜
 
-![](http://nepxion.gitee.io/discovery/docs/discovery-doc/Logo64.png) Discovery【探索】微服务企业级解决方案
+![](http://nepxion.gitee.io/discovery/docs/discovery-doc/Logo64.png) Discovery【探索】企业级云原生微服务开源解决方案
 
-① Discovery【探索】微服务企业级解决方案文档
-- [Discovery【探索】微服务企业级解决方案(WIKI版)](http://nepxion.com/discovery)
-- [Discovery【探索】微服务企业级解决方案(PPT版)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-ppt.html)
-- [Discovery【探索】微服务企业级解决方案(PDF版)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-pdf.html)
-- [Discovery【探索】微服务企业级解决方案(HTML版)](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-html.html)
+① 解决方案
+- [解决方案WIKI版](http://nepxion.com/discovery)
+- [解决方案PPT版](http://nepxion.gitee.io/discovery/docs/link-doc/discovery-ppt.html)
 
-② Discovery【探索】微服务企业级解决方案平台操作手册
-- [Discovery【探索】微服务企业级解决方案平台操作手册](http://nepxion.com/discovery-platform)
+② 平台界面
+- [平台界面WIKI版](http://nepxion.com/discovery-platform)
 
-③ Discovery【探索】微服务企业级解决方案源码。请访问Gitee镜像获得最佳体验
-- [源码Gitee同步镜像](https://gitee.com/Nepxion/Discovery)
-- [源码Github原镜像](https://github.com/Nepxion/Discovery)
+③ 快速入门
+- [快速入门Github版](https://github.com/Nepxion/Discovery/wiki)
+- [快速入门Gitee版](https://gitee.com/Nepxion/Discovery/wikis/pages)
 
-④ Discovery【探索】微服务企业级解决方案指南示例源码。请访问Gitee镜像获得最佳体验
-- [指南Gitee同步镜像](https://gitee.com/Nepxion/DiscoveryGuide)
-- [指南Github原镜像](https://github.com/Nepxion/DiscoveryGuide)
+④ 框架源码
+- [框架源码Github版](https://github.com/Nepxion/Discovery)
+- [框架源码Gitee版](https://gitee.com/Nepxion/Discovery)
 
-⑤ Discovery【探索】微服务企业级解决方案指南示例说明
+⑤ 指南示例源码
+- [指南示例源码Github版](https://github.com/Nepxion/DiscoveryGuide)
+- [指南示例源码Gitee版](https://gitee.com/Nepxion/DiscoveryGuide)
+
+⑥ 指南示例说明
 - 对于入门级玩家，参考[6.x.x指南示例极简版](https://github.com/Nepxion/DiscoveryGuide/tree/6.x.x-simple)，分支为6.x.x-simple
 - 对于熟练级玩家，参考[6.x.x指南示例精进版](https://github.com/Nepxion/DiscoveryGuide/tree/6.x.x)，分支为6.x.x。除上述《极简版》功能外，涉及到指南篇里的绝大多数高级功能
 - 对于骨灰级玩家，参考[6.x.x指南示例高级版](https://github.com/Nepxion/DiscoveryGuide/tree/6.x.x-complex)，分支为6.x.x-complex。除上述《精进版》功能外，涉及到指南篇里的ActiveMQ、MongoDB、RabbitMQ、Redis、RocketMQ、MySQL等高级调用链和蓝绿灰度调用链的整合
-- 上述指南实例分支是针对Spring Cloud旧版本。对于Spring Cloud 202x版本，参考[202x版指南示例精进版](https://github.com/Nepxion/DiscoveryGuide/tree/master)，分支为master
+- 上述指南实例分支是针对Spring Cloud旧版本。对于Spring Cloud 202x版本，参考[7.x.x指南示例精进版](https://github.com/Nepxion/DiscoveryGuide/tree/master)，分支为master
 
-⑥ Discovery【探索】微服务企业级解决方案快速入门文档
-- [Gitee Wiki](https://gitee.com/Nepxion/Discovery/wikis/pages)
-- [Github Wiki](https://github.com/Nepxion/Discovery/wiki)
+![](http://nepxion.gitee.io/discovery/docs/polaris-doc/Logo64.png) Polaris【北极星】企业级云原生微服务商业解决方案
 
-![](http://nepxion.gitee.io/discovery/docs/polaris-doc/Logo64.png) Polaris【北极星】企业级云原生微服务框架
+① 解决方案
+- [解决方案WIKI版](http://nepxion.com/polaris)
 
-① Polaris【北极星】企业级云原生微服务框架文档
-- [Polaris【北极星】企业级云原生微服务框架(WIKI版)](http://nepxion.com/polaris)
-- [Polaris【北极星】企业级云原生微服务框架(PDF版)](http://nepxion.gitee.io/discovery/docs/link-doc/polaris-pdf.html)
-- [Polaris【北极星】企业级云原生微服务框架(HTML版)](http://nepxion.gitee.io/discovery/docs/link-doc/polaris-html.html)
+② 框架源码
+- [框架源码Github版](https://github.com/polaris-paas/polaris-sdk)
+- [框架源码Gitee版](https://gitee.com/polaris-paas/polaris-sdk)
 
-② Polaris【北极星】企业级云原生微服务框架源码。请访问Gitee镜像获得最佳体验
-- [源码Gitee同步镜像](https://gitee.com/polaris-paas/polaris-sdk)
-- [源码Github原镜像](https://github.com/polaris-paas/polaris-sdk)
+③ 指南示例源码
+- [指南示例源码Github版](https://github.com/polaris-paas/polaris-guide)
+- [指南示例源码Gitee版](https://gitee.com/polaris-paas/polaris-guide)
 
-③ Polaris【北极星】企业级云原生微服务框架指南示例源码。请访问Gitee镜像获得最佳体验
-- [指南Gitee同步镜像](https://gitee.com/polaris-paas/polaris-guide)
-- [指南Github原镜像](https://github.com/polaris-paas/polaris-guide)
-
-④ Polaris【北极星】企业级云原生微服务框架指南示例说明
+④ 指南示例说明
 - Spring Cloud旧版本，参考[1.x.x指南示例](https://github.com/polaris-paas/polaris-guide/tree/1.x.x)，分支为1.x.x
 - Spring Cloud新版本，参考[2.x.x指南示例](https://github.com/polaris-paas/polaris-guide/tree/master)，分支为master
 
@@ -148,7 +144,8 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 - 支持Spring Spel解决蓝绿灰度参数的驱动逻辑
 - 支持Spring Matcher解决元数据匹配的通配逻辑
 - 支持Spring Cloud Gateway、Zuul网关和微服务三大模块的蓝绿灰度发布等一系列功能
-- 支持和兼容Spring Cloud Edgware版、Finchley版、Greenwich版、Hoxton版和202x版
+- 支持和兼容Spring Cloud Edgware版、Finchley版、Greenwich版、Hoxton版和202x版以及更高的Spring Cloud版本
+- 支持和兼容Java8～Java16以及更高的SDK版本
 
 ![](http://nepxion.gitee.io/discovery/docs/discovery-doc/Diagram.jpg)
 
@@ -254,10 +251,10 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 | 框架版本 | 框架分支 | 框架状态 | Spring Cloud版本 | Spring Boot版本 | Spring Cloud Alibaba版本 |
 | --- | --- | --- | --- | --- | --- |
 | 7.0.0<br>商业版 | master | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/confirm_24.png) | 202x.x.x | 2.5.x<br>2.4.1 `↑` | 202x.x |
-| 6.10.0 | 6.x.x | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/confirm_24.png) | Hoxton.SR5 `↑`<br>Hoxton<br>Greenwich<br>Finchley | 2.3.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE | 2.2.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE |
+| 6.11.0 | 6.x.x | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/confirm_24.png) | Hoxton.SR5 `↑`<br>Hoxton<br>Greenwich<br>Finchley | 2.3.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE | 2.2.x.RELEASE<br>2.2.x.RELEASE<br>2.1.x.RELEASE<br>2.0.x.RELEASE |
 | ~~5.6.0~~ | ~~5.x.x~~ | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/delete_24.png) | Greenwich | 2.1.x.RELEASE | 2.1.x.RELEASE |
 | ~~4.15.0~~ | ~~4.x.x~~ | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/delete_24.png) | Finchley | 2.0.x.RELEASE | 2.0.x.RELEASE |
-| 3.26.0 | 3.x.x | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/arrow_up_24.png) | Edgware | 1.5.x.RELEASE | 1.5.x.RELEASE |
+| 3.27.0 | 3.x.x | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/arrow_up_24.png) | Edgware | 1.5.x.RELEASE | 1.5.x.RELEASE |
 | ~~2.0.x~~ | ~~2.x.x~~ | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/delete_24.png) | Dalston | 1.x.x.RELEASE | 1.5.x.RELEASE |
 | ~~1.0.x~~ | ~~1.x.x~~ | ![](http://nepxion.gitee.io/discovery/docs/icon-doc/delete_24.png) | Camden | 1.x.x.RELEASE | 1.5.x.RELEASE |
 
@@ -511,7 +508,6 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
     - [发布主页](#发布主页)
     - [指南主页](#指南主页)
     - [入门主页](#入门主页)
-    - [文档主页](#文档主页)
     - [博客主页](#博客主页)
 - [工程架构](#工程架构)
     - [工程清单](#工程清单)
@@ -698,9 +694,6 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 
 [Github Wiki](https://github.com/Nepxion/Discovery/wiki)
 
-### 文档主页
-[文档主页](https://gitee.com/Nepxion/Discovery/tree/wiki/docs/web-doc)
-
 ### 博客主页
 [博客主页](https://blog.csdn.net/u012410733/category_10633202.html?spm=1001.2014.3001.5482)
 
@@ -815,14 +808,14 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 
 ### 代码清单
 
-| 仓库 | 代码行数 |
+| 仓库主分支 | 代码行数 |
 | --- | --- |
-| Discovery | [![Total lines](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines) |
-| DiscoveryGuide | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryGuide?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryGuide?category=lines) |
-| DiscoveryPlatform | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryPlatform?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryPlatform?category=lines) |
-| DiscoveryAgent | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryAgent?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryAgent?category=lines) |
-| DiscoveryUI | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryUI?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryUI?category=lines) |
-| DiscoveryContrib | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryContrib?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryContrib?category=lines) |
+| <img src="http://nepxion.gitee.io/discovery/docs/icon-doc/direction_west.png"> Discovery | [![Total lines](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines)](https://tokei.rs/b1/github/Nepxion/Discovery?category=lines) |
+| <img src="http://nepxion.gitee.io/discovery/docs/icon-doc/direction_west.png"> DiscoveryPlatform | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryPlatform?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryPlatform?category=lines) |
+| <img src="http://nepxion.gitee.io/discovery/docs/icon-doc/direction_west.png"> DiscoveryGuide | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryGuide?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryGuide?category=lines) |
+| <img src="http://nepxion.gitee.io/discovery/docs/icon-doc/direction_west.png"> DiscoveryAgent | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryAgent?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryAgent?category=lines) |
+| <img src="http://nepxion.gitee.io/discovery/docs/icon-doc/direction_west.png"> DiscoveryUI | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryUI?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryUI?category=lines) |
+| <img src="http://nepxion.gitee.io/discovery/docs/icon-doc/direction_west.png"> DiscoveryContrib | [![Total lines](https://tokei.rs/b1/github/Nepxion/DiscoveryContrib?category=lines)](https://tokei.rs/b1/github/Nepxion/DiscoveryContrib?category=lines) |
 
 ### 架构核心
 - 服务治理架构图
@@ -968,7 +961,7 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 为了更好的阐述框架的各项功能，本文围绕指南示例展开，请使用者先进行下面的准备工作。指南示例以Nacos为服务注册中心和配置中心展开介绍，使用者可自行换成其它服务注册中心和配置中心
 
 ### 环境搭建
-① 下载代码，Git clone [https://github.com/Nepxion/DiscoveryGuide.git](https://github.com/Nepxion/DiscoveryGuide.git)
+① 下载代码，Git clone [https://github.com/Nepxion/DiscoveryGuide.git](https://github.com/Nepxion/DiscoveryGuide.git)，分支为6.x.x-simple
 
 ② 代码导入IDE
 
@@ -982,7 +975,7 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 - Linux环境下，运行bin目录下的startup.sh
 
 ### 启动服务 
-- 在IDE中，启动四个应用服务和两个网关服务，控制平台服务和监控平台服务可选，如下
+- 在IDE中，启动四个应用服务和两个网关服务，如下
 
 | 类名 | 微服务 | 服务端口 | 版本 | 区域 | 环境 | 可用区 |
 | --- | --- | --- | --- | --- | -- | -- | 
@@ -992,8 +985,6 @@ Discovery【探索】微服务框架，基于Spring Cloud & Spring Cloud Alibaba
 | DiscoveryGuideServiceB2.java | B2 | 4002 | 1.1 | dev | common | zone2 |
 | DiscoveryGuideGateway.java | Gateway | 5001 | 1.0 | 无 | 无 | 无 |
 | DiscoveryGuideZuul.java | Zuul | 5002 | 1.0 | 无 | 无 | 无 |
-| DiscoveryGuideConsole.java | Console | 6001 | 1.0 | 无 | 无 | 无 |
-| DiscoveryGuideAdmin.java | Admin | 6002 | 1.0 | 无 | 无 | 无 |
 
 - 部署拓扑图
 
@@ -1269,7 +1260,7 @@ n-d-region={"discovery-guide-service-a":"dev", "discovery-guide-service-b":"dev"
 ```
 "discovery-guide-service-b":"3*;400?"
 ```
-表示discovery-guide-service-b服务的调用范围是3开头的所有端口，或者调用范围是4开头的所有端口（末尾必须是1个字符），多个用分号隔开
+表示discovery-guide-service-b服务的调用范围是3开头的所有端口，或者调用范围是400开头的所有端口（末尾必须是1个字符），多个用分号隔开
 
 ![](http://nepxion.gitee.io/discovery/docs/icon-doc/tip.png) 提醒：非条件驱动下的全链路蓝绿发布跟Header驱动下的全链路蓝绿发布等效，例如
 ```
@@ -1849,10 +1840,10 @@ A部门服务直接访问B部门服务
 - 服务下线实时性的流量绝对无损，IP地址和端口屏蔽策略，Header格式如下任选一个
 
 ```
-1. n-d-address=3001;4002
-2. n-d-address={"discovery-guide-service-a":"127.0.0.1:3001", "discovery-guide-service-b":"127.0.0.1:4002"}
-3. n-d-address={"discovery-guide-service-a":"127.0.0.1", "discovery-guide-service-b":"127.0.0.1"}
-4. n-d-address={"discovery-guide-service-a":"3001", "discovery-guide-service-b":"4002"}
+1. n-d-address-blacklist=3001;4002
+2. n-d-address-blacklist={"discovery-guide-service-a":"127.0.0.1:3001", "discovery-guide-service-b":"127.0.0.1:4002"}
+3. n-d-address-blacklist={"discovery-guide-service-a":"127.0.0.1", "discovery-guide-service-b":"127.0.0.1"}
+4. n-d-address-blacklist={"discovery-guide-service-a":"3001", "discovery-guide-service-b":"4002"}
 ```
 
 ![](http://nepxion.gitee.io/discovery/docs/icon-doc/tip.png) 全链路前端触发后端蓝绿灰度发布全景功能
@@ -2899,7 +2890,7 @@ spring.application.strategy.version.prefer.enabled=true
 ```
 "discovery-guide-service-b":"3*;400?"
 ```
-表示discovery-guide-service-b服务的屏蔽范围是3开头的所有端口，或者屏蔽范围是4开头的所有端口（末尾必须是1个字符），多个用分号隔开
+表示discovery-guide-service-b服务的屏蔽范围是3开头的所有端口，或者屏蔽范围是400开头的所有端口（末尾必须是1个字符），多个用分号隔开
 
 ![](http://nepxion.gitee.io/discovery/docs/icon-doc/tip.png) 提醒：跟Header驱动下的IP地址和端口屏蔽策略等效，例如
 ```
@@ -5087,7 +5078,9 @@ spring.application.strategy.scan.packages=com.nepxion.discovery.guide.service.fe
 ## 元数据流量染色
 
 ### 基于Git插件自动创建版本号
-通过集成插件git-commit-id-plugin，通过产生git信息文件的方式，获取git.commit.id（最后一次代码的提交ID）或者git.build.version（对应到Maven工程的版本）来自动创建版本号，这样就可以避免使用者手工维护版本号。当两者都启用的时候，Git插件方式的版本号优先级要高于手工配置的版本号
+通过集成插件git-commit-id-plugin，通过产生git信息文件的方式，获取git.commit.id（最后一次代码的提交ID）或者git.build.version（对应到Maven工程的版本）来自动创建版本号，这样就可以避免使用者手工维护版本号
+
+![](http://nepxion.gitee.io/discovery/docs/icon-doc/tip.png) 提醒：当两者都启用的时候，手工配置的版本号优先级要高于Git插件方式的版本号
 
 - 增加Git编译插件
 
@@ -5212,7 +5205,9 @@ spring.application.git.generator.path=file:git.json
 | 获取Git信息的文本格式 | `http://`[IP:PORT]/git/text | 无 | GET |
 
 ### 基于服务名前缀自动创建组名
-通过指定长度截断或者标志截断服务名的前缀来自动创建组名，这样就可以避免使用者手工维护组名。当两者都启用的时候，截断方式的组名优先级要高于手工配置的组名
+通过指定长度截断或者标志截断服务名的前缀来自动创建组名，这样就可以避免使用者手工维护组名
+
+![](http://nepxion.gitee.io/discovery/docs/icon-doc/tip.png) 提醒：当两者都启用的时候，手工配置的组名优先级要高于截断方式的组名
 
 - 增加配置项
 
