@@ -10,6 +10,7 @@ package com.nepxion.discovery.plugin.registercenter.consul.context;
  */
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
@@ -21,6 +22,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.constant.DiscoveryMetaDataConstant;
+import com.nepxion.discovery.common.context.DiscoveryMetaDataPreInstallation;
 import com.nepxion.discovery.common.entity.DiscoveryType;
 import com.nepxion.discovery.plugin.framework.adapter.ApplicationInfoAdapter;
 import com.nepxion.discovery.plugin.framework.context.PluginApplicationContextInitializer;
@@ -44,7 +46,7 @@ public class ConsulApplicationContextInitializer extends PluginApplicationContex
             List<String> metadata = consulDiscoveryProperties.getTags();
 
             String groupKey = PluginContextAware.getGroupKey(environment);
-            if (!MetadataUtil.containsKey(metadata, groupKey)) {
+            /*if (!MetadataUtil.containsKey(metadata, groupKey)) {
                 metadata.add(groupKey + "=" + DiscoveryConstant.DEFAULT);
             }
             if (!MetadataUtil.containsKey(metadata, DiscoveryConstant.VERSION)) {
@@ -53,6 +55,15 @@ public class ConsulApplicationContextInitializer extends PluginApplicationContex
             if (!MetadataUtil.containsKey(metadata, DiscoveryConstant.REGION)) {
                 metadata.add(DiscoveryConstant.REGION + "=" + DiscoveryConstant.DEFAULT);
             }
+            if (!MetadataUtil.containsKey(metadata, DiscoveryConstant.ENVIRONMENT)) {
+                metadata.add(DiscoveryConstant.ENVIRONMENT + "=" + DiscoveryConstant.DEFAULT);
+            }
+            if (!MetadataUtil.containsKey(metadata, DiscoveryConstant.ZONE)) {
+                metadata.add(DiscoveryConstant.ZONE + "=" + DiscoveryConstant.DEFAULT);
+            }
+            if (!MetadataUtil.containsKey(metadata, DiscoveryConstant.ACTIVE)) {
+                metadata.add(DiscoveryConstant.ACTIVE + "=" + "false");
+            }*/
             String prefixGroup = getPrefixGroup(applicationContext);
             if (StringUtils.isNotEmpty(prefixGroup)) {
                 metadata.set(MetadataUtil.getIndex(metadata, groupKey), groupKey + "=" + prefixGroup);
@@ -74,20 +85,27 @@ public class ConsulApplicationContextInitializer extends PluginApplicationContex
             metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_PLUGIN + "=" + DiscoveryType.CONSUL);
             metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_VERSION + "=" + DiscoveryConstant.DISCOVERY_VERSION);
             String agentVersion = System.getProperty(DiscoveryConstant.SPRING_APPLICATION_DISCOVERY_AGENT_VERSION);
-            metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_AGENT_VERSION + "=" + (StringUtils.isEmpty(agentVersion) ? DiscoveryConstant.UNKNOWN : agentVersion));
-            metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_REGISTER_CONTROL_ENABLED + "=" + PluginContextAware.isRegisterControlEnabled(environment));
-            metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_CONTROL_ENABLED + "=" + PluginContextAware.isDiscoveryControlEnabled(environment));
-            metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_CONFIG_REST_CONTROL_ENABLED + "=" + PluginContextAware.isConfigRestControlEnabled(environment));
+            if (StringUtils.isNotEmpty(agentVersion)) {
+                metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_DISCOVERY_AGENT_VERSION + "=" + agentVersion);
+            }
             metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_GROUP_KEY + "=" + groupKey);
             metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_CONTEXT_PATH + "=" + PluginContextAware.getContextPath(environment));
 
             try {
                 ApplicationInfoAdapter applicationInfoAdapter = applicationContext.getBean(ApplicationInfoAdapter.class);
                 if (applicationInfoAdapter != null) {
-                    metadata.add(DiscoveryMetaDataConstant.APP_ID + "=" + applicationInfoAdapter.getAppId());
+                    metadata.add(DiscoveryMetaDataConstant.SPRING_APPLICATION_APP_ID + "=" + applicationInfoAdapter.getAppId());
                 }
             } catch (Exception e) {
 
+            }
+
+            for (Map.Entry<String, String> entry : DiscoveryMetaDataPreInstallation.getMetadata().entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                if (StringUtils.isNotEmpty(value)) {
+                    metadata.add(key + "=" + value);
+                }
             }
 
             MetadataUtil.filter(metadata, environment);

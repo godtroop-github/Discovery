@@ -50,15 +50,16 @@ public class MyDiscoveryEnabledStrategy implements DiscoveryEnabledStrategy {
             // 手机号以移动138开头，路由到1.0版本的服务上
             if (mobile.startsWith("138") && StringUtils.equals(version, "1.0")) {
                 return true;
-                // 手机号以联通133开头，路由到2.0版本的服务上
+                // 手机号以联通133开头，路由到1.1版本的服务上
             } else if (mobile.startsWith("133") && StringUtils.equals(version, "1.1")) {
                 return true;
             } else {
-                // 其它情况，直接拒绝请求
+                // 其它情况，实例被过滤掉
                 return false;
             }
         }
 
+        // 无手机号，实例不被过滤掉
         return true;
     }
 }

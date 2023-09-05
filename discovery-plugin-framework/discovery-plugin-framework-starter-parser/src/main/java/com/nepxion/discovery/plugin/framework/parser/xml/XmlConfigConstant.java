@@ -17,7 +17,7 @@ public class XmlConfigConstant {
     public static final String DISCOVERY_ELEMENT_NAME = "discovery";
     public static final String STRATEGY_ELEMENT_NAME = "strategy";
     public static final String STRATEGY_RELEASE_ELEMENT_NAME = "strategy-release";
-    public static final String STRATEGY_CUSTOMIZATION_ELEMENT_NAME = "strategy-customization";
+    public static final String STRATEGY_FAILOVER_ELEMENT_NAME = "strategy-failover";
     public static final String STRATEGY_BLACKLIST_ELEMENT_NAME = "strategy-blacklist";
     public static final String PARAMETER_ELEMENT_NAME = "parameter";
     public static final String CONDITIONS_ELEMENT_NAME = "conditions";
@@ -25,6 +25,13 @@ public class XmlConfigConstant {
     public static final String ROUTES_ELEMENT_NAME = "routes";
     public static final String ROUTE_ELEMENT_NAME = "route";
     public static final String HEADER_ELEMENT_NAME = "header";
+    public static final String VERSION_PREFER_ELEMENT_NAME = DiscoveryConstant.VERSION_PREFER;
+    public static final String VERSION_FAILOVER_ELEMENT_NAME = DiscoveryConstant.VERSION_FAILOVER;
+    public static final String REGION_TRANSFER_ELEMENT_NAME = DiscoveryConstant.REGION_TRANSFER;
+    public static final String REGION_FAILOVER_ELEMENT_NAME = DiscoveryConstant.REGION_FAILOVER;
+    public static final String ENVIRONMENT_FAILOVER_ELEMENT_NAME = DiscoveryConstant.ENVIRONMENT_FAILOVER;
+    public static final String ZONE_FAILOVER_ELEMENT_NAME = DiscoveryConstant.ZONE_FAILOVER;
+    public static final String ADDRESS_FAILOVER_ELEMENT_NAME = DiscoveryConstant.ADDRESS_FAILOVER;
     public static final String ID_ELEMENT_NAME = "id";
     public static final String SERVICE_ELEMENT_NAME = "service";
     public static final String BLACKLIST_ELEMENT_NAME = "blacklist";

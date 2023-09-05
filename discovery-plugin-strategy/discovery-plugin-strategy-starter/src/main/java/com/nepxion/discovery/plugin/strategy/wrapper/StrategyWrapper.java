@@ -28,13 +28,14 @@ import com.nepxion.discovery.common.entity.StrategyBlacklistEntity;
 import com.nepxion.discovery.common.entity.StrategyConditionBlueGreenEntity;
 import com.nepxion.discovery.common.entity.StrategyConditionGrayEntity;
 import com.nepxion.discovery.common.entity.StrategyEntity;
+import com.nepxion.discovery.common.entity.StrategyFailoverEntity;
 import com.nepxion.discovery.common.entity.StrategyHeaderEntity;
 import com.nepxion.discovery.common.entity.StrategyReleaseEntity;
 import com.nepxion.discovery.common.entity.StrategyRouteEntity;
 import com.nepxion.discovery.common.entity.StrategyRouteType;
 import com.nepxion.discovery.common.entity.VersionWeightEntity;
 import com.nepxion.discovery.plugin.framework.adapter.PluginAdapter;
-import com.nepxion.discovery.plugin.framework.loadbalance.weight.MapWeightRandom;
+import com.nepxion.discovery.plugin.framework.loadbalance.weight.WeightRandomProcessor;
 import com.nepxion.discovery.plugin.strategy.condition.StrategyCondition;
 
 public class StrategyWrapper {
@@ -43,6 +44,9 @@ public class StrategyWrapper {
 
     @Autowired
     protected StrategyCondition strategyCondition;
+
+    @Autowired
+    protected WeightRandomProcessor<String> strategyWeightRandomProcessor;
 
     // 从远程配置中心或者本地配置文件获取版本匹配路由配置。如果是远程配置中心，则值会动态改变
     // 返回格式允许如下一种
@@ -82,6 +86,118 @@ public class StrategyWrapper {
     // 2. 纯字符串格式，内容：单个或者逗号分隔多个区域百分比（例如：dev=85;qa=15）
     public String getRouteRegionWeight() {
         return getRouteRegionWeight(null);
+    }
+
+    // 从远程配置中心或者本地配置文件获取版本偏好配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个版本
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个版本
+    public String getRouteVersionPrefer() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getVersionPreferValue();
+            }
+        }
+
+        return null;
+    }
+
+    // 从远程配置中心或者本地配置文件获取版本故障转移配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个版本
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个版本
+    public String getRouteVersionFailover() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getVersionFailoverValue();
+            }
+        }
+
+        return null;
+    }
+
+    // 从远程配置中心或者本地配置文件获取区域调试转移配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个区域
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个区域
+    public String getRouteRegionTransfer() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getRegionTransferValue();
+            }
+        }
+
+        return null;
+    }
+
+    // 从远程配置中心或者本地配置文件获取区域故障转移配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个区域
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个区域
+    public String getRouteRegionFailover() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getRegionFailoverValue();
+            }
+        }
+
+        return null;
+    }
+
+    // 从远程配置中心或者本地配置文件获取环境故障转移配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个环境
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个环境
+    public String getRouteEnvironmentFailover() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getEnvironmentFailoverValue();
+            }
+        }
+
+        return null;
+    }
+
+    // 从远程配置中心或者本地配置文件获取可用区故障转移配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个可用区
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个可用区
+    public String getRouteZoneFailover() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getZoneFailoverValue();
+            }
+        }
+
+        return null;
+    }
+
+    // 从远程配置中心或者本地配置文件获取IP地址和端口故障转移配置。如果是远程配置中心，则值会动态改变
+    // 返回格式允许如下一种
+    // 1. Json格式，内容：服务名 -> 单个或者逗号分隔多个IP地址和端口（例如：{"a-service":"127.0.0.1:3001", "b-service":"4002"}）
+    // 2. 纯字符串格式，内容：单个或者逗号分隔多个IP地址和端口（例如：127.0.0.1:3001;4002）
+    public String getRouteAddressFailover() {
+        RuleEntity ruleEntity = pluginAdapter.getRule();
+        if (ruleEntity != null) {
+            StrategyFailoverEntity strategyFailoverEntity = ruleEntity.getStrategyFailoverEntity();
+            if (strategyFailoverEntity != null) {
+                return strategyFailoverEntity.getAddressFailoverValue();
+            }
+        }
+
+        return null;
     }
 
     // 从远程配置中心或者本地配置文件获取全局唯一ID黑名单屏蔽配置。如果是远程配置中心，则值会动态改变
@@ -530,19 +646,18 @@ public class StrategyWrapper {
             return null;
         }
 
-        List<Pair<String, Double>> weightList = new ArrayList<Pair<String, Double>>();
+        List<Pair<String, Integer>> weightList = new ArrayList<Pair<String, Integer>>();
         for (Map.Entry<String, Integer> entry : weightMap.entrySet()) {
             String id = entry.getKey();
             StrategyRouteEntity strategyRouteEntity = getTriggeredStrategyRouteEntity(id, strategyRouteType);
             if (strategyRouteEntity != null) {
                 String strategyRoute = strategyRouteEntity.getValue();
-                Double weight = Double.valueOf(entry.getValue());
-                weightList.add(new ImmutablePair<String, Double>(strategyRoute, weight));
+                Integer weight = Integer.valueOf(entry.getValue());
+                weightList.add(new ImmutablePair<String, Integer>(strategyRoute, weight));
             }
         }
-        MapWeightRandom<String, Double> weightRandom = new MapWeightRandom<String, Double>(weightList);
 
-        return weightRandom.random();
+        return strategyWeightRandomProcessor.random(weightList);
     }
 
     // 根据路由ID和路由类型查询相关的路由对象

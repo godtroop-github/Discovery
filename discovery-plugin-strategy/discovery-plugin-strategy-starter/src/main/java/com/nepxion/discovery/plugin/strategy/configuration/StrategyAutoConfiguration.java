@@ -11,7 +11,6 @@ package com.nepxion.discovery.plugin.strategy.configuration;
 
 import feign.Feign;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -19,7 +18,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.netflix.ribbon.RibbonClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.expression.TypeComparator;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -33,24 +31,82 @@ import com.nepxion.discovery.plugin.strategy.aop.RestTemplateStrategyBeanPostPro
 import com.nepxion.discovery.plugin.strategy.aop.RestTemplateStrategyInterceptor;
 import com.nepxion.discovery.plugin.strategy.aop.WebClientStrategyBeanPostProcessor;
 import com.nepxion.discovery.plugin.strategy.aop.WebClientStrategyInterceptor;
-import com.nepxion.discovery.plugin.strategy.condition.DefaultStrategyTypeComparor;
+import com.nepxion.discovery.plugin.strategy.condition.DefaultStrategyTypeComparator;
 import com.nepxion.discovery.plugin.strategy.condition.ExpressionStrategyCondition;
 import com.nepxion.discovery.plugin.strategy.condition.StrategyCondition;
 import com.nepxion.discovery.plugin.strategy.constant.StrategyConstant;
+import com.nepxion.discovery.plugin.strategy.context.StrategyHeaderContext;
 import com.nepxion.discovery.plugin.strategy.extractor.StrategyPackagesExtractor;
-import com.nepxion.discovery.plugin.strategy.filter.StrategyVersionFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyAddressBlacklistEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyAddressEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyEnvironmentEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyGroupEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyIdBlacklistEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyRegionEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyVersionEnabledFilter;
+import com.nepxion.discovery.plugin.strategy.filter.StrategyZoneEnabledFilter;
 import com.nepxion.discovery.plugin.strategy.matcher.DiscoveryAntPathMatcherStrategy;
+import com.nepxion.discovery.plugin.strategy.matcher.DiscoveryMatcher;
 import com.nepxion.discovery.plugin.strategy.matcher.DiscoveryMatcherStrategy;
 import com.nepxion.discovery.plugin.strategy.monitor.DefaultStrategyAlarm;
 import com.nepxion.discovery.plugin.strategy.monitor.DefaultStrategyLogger;
 import com.nepxion.discovery.plugin.strategy.monitor.StrategyAlarm;
 import com.nepxion.discovery.plugin.strategy.monitor.StrategyLogger;
 import com.nepxion.discovery.plugin.strategy.monitor.StrategyMonitorContext;
+import com.nepxion.discovery.plugin.strategy.monitor.StrategyTracerContextListener;
 import com.nepxion.discovery.plugin.strategy.wrapper.StrategyWrapper;
 
 @Configuration
 @RibbonClients(defaultConfiguration = { StrategyLoadBalanceConfiguration.class })
 public class StrategyAutoConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyIdBlacklistEnabledFilter strategyIdBlacklistEnabledFilter() {
+        return new StrategyIdBlacklistEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyAddressBlacklistEnabledFilter strategyAddressBlacklistEnabledFilter() {
+        return new StrategyAddressBlacklistEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyGroupEnabledFilter strategyGroupEnabledFilter() {
+        return new StrategyGroupEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyEnvironmentEnabledFilter strategyEnvironmentEnabledFilter() {
+        return new StrategyEnvironmentEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyZoneEnabledFilter strategyZoneEnabledFilter() {
+        return new StrategyZoneEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyAddressEnabledFilter strategyAddressEnabledFilter() {
+        return new StrategyAddressEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyRegionEnabledFilter strategyRegionEnabledFilter() {
+        return new StrategyRegionEnabledFilter();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public StrategyVersionEnabledFilter strategyVersionEnabledFilter() {
+        return new StrategyVersionEnabledFilter();
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public DiscoveryEnabledAdapter discoveryEnabledAdapter() {
@@ -65,14 +121,19 @@ public class StrategyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public StrategyVersionFilter strategyVersionFilter() {
-        return new StrategyVersionFilter();
+    public DiscoveryMatcher discoveryMatcher() {
+        return new DiscoveryMatcher();
     }
 
     @Bean
     @ConditionalOnMissingBean
     public StrategyVersionFilterAdapter strategyVersionFilterAdapter() {
         return new DefaultStrategyVersionFilterAdapter();
+    }
+
+    @Bean
+    public StrategyHeaderContext strategyHeaderContext() {
+        return new StrategyHeaderContext();
     }
 
     @Bean
@@ -108,9 +169,15 @@ public class StrategyAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(value = StrategyConstant.SPRING_APPLICATION_STRATEGY_MONITOR_ENABLED, matchIfMissing = false)
+    public StrategyTracerContextListener strategyTracerContextListener() {
+        return new StrategyTracerContextListener();
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     public TypeComparator strategyTypeComparator() {
-        return new DefaultStrategyTypeComparor();
+        return new DefaultStrategyTypeComparator();
     }
 
     @Bean
@@ -121,31 +188,19 @@ public class StrategyAutoConfiguration {
 
     @ConditionalOnClass(Feign.class)
     protected static class FeignStrategyConfiguration {
-        @Autowired
-        private ConfigurableEnvironment environment;
-
         @Bean
         @ConditionalOnProperty(value = StrategyConstant.SPRING_APPLICATION_STRATEGY_REST_INTERCEPT_ENABLED, matchIfMissing = true)
         public FeignStrategyInterceptor feignStrategyInterceptor() {
-            String contextRequestHeaders = environment.getProperty(StrategyConstant.SPRING_APPLICATION_STRATEGY_CONTEXT_REQUEST_HEADERS);
-            String businessRequestHeaders = environment.getProperty(StrategyConstant.SPRING_APPLICATION_STRATEGY_BUSINESS_REQUEST_HEADERS);
-
-            return new FeignStrategyInterceptor(contextRequestHeaders, businessRequestHeaders);
+            return new FeignStrategyInterceptor();
         }
     }
 
     @ConditionalOnClass(RestTemplate.class)
     protected static class RestTemplateStrategyConfiguration {
-        @Autowired
-        private ConfigurableEnvironment environment;
-
         @Bean
         @ConditionalOnProperty(value = StrategyConstant.SPRING_APPLICATION_STRATEGY_REST_INTERCEPT_ENABLED, matchIfMissing = true)
         public RestTemplateStrategyInterceptor restTemplateStrategyInterceptor() {
-            String contextRequestHeaders = environment.getProperty(StrategyConstant.SPRING_APPLICATION_STRATEGY_CONTEXT_REQUEST_HEADERS);
-            String businessRequestHeaders = environment.getProperty(StrategyConstant.SPRING_APPLICATION_STRATEGY_BUSINESS_REQUEST_HEADERS);
-
-            return new RestTemplateStrategyInterceptor(contextRequestHeaders, businessRequestHeaders);
+            return new RestTemplateStrategyInterceptor();
         }
 
         @Bean
@@ -159,16 +214,10 @@ public class StrategyAutoConfiguration {
     @ConditionalOnClass(WebClient.class)
     @ConditionalOnBean(WebClient.Builder.class)
     protected static class WebClientStrategyConfiguration {
-        @Autowired
-        private ConfigurableEnvironment environment;
-
         @Bean
         @ConditionalOnProperty(value = StrategyConstant.SPRING_APPLICATION_STRATEGY_REST_INTERCEPT_ENABLED, matchIfMissing = true)
         public WebClientStrategyInterceptor webClientStrategyInterceptor() {
-            String contextRequestHeaders = environment.getProperty(StrategyConstant.SPRING_APPLICATION_STRATEGY_CONTEXT_REQUEST_HEADERS);
-            String businessRequestHeaders = environment.getProperty(StrategyConstant.SPRING_APPLICATION_STRATEGY_BUSINESS_REQUEST_HEADERS);
-
-            return new WebClientStrategyInterceptor(contextRequestHeaders, businessRequestHeaders);
+            return new WebClientStrategyInterceptor();
         }
 
         @Bean

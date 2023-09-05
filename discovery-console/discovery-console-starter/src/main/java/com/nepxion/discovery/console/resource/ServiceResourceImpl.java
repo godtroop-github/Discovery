@@ -22,8 +22,6 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.composite.CompositeDiscoveryClient;
 
-import com.nepxion.discovery.common.constant.DiscoveryConstant;
-import com.nepxion.discovery.common.constant.DiscoveryMetaDataConstant;
 import com.nepxion.discovery.common.delegate.DiscoveryClientDelegate;
 import com.nepxion.discovery.common.entity.DiscoveryType;
 import com.nepxion.discovery.common.entity.GatewayType;
@@ -80,8 +78,8 @@ public class ServiceResourceImpl implements ServiceResource {
         for (String service : services) {
             List<InstanceEntity> instanceEntityList = getInstanceList(service);
             for (InstanceEntity instance : instanceEntityList) {
-                String plugin = InstanceEntityWrapper.getPlugin(instance);
-                String group = InstanceEntityWrapper.getGroup(instance);
+                String plugin = instance.getPlugin();
+                String group = instance.getGroup();
                 if (StringUtils.isNotEmpty(plugin) && !groupList.contains(group)) {
                     groupList.add(group);
                 }
@@ -97,7 +95,7 @@ public class ServiceResourceImpl implements ServiceResource {
     public String getGroup(String serviceId) {
         List<InstanceEntity> instanceEntityList = getInstanceList(serviceId);
         for (InstanceEntity instance : instanceEntityList) {
-            String group = InstanceEntityWrapper.getGroup(instance);
+            String group = instance.getGroup();
             if (StringUtils.isNotEmpty(group)) {
                 return group;
             }
@@ -124,11 +122,37 @@ public class ServiceResourceImpl implements ServiceResource {
             for (ServiceInstance instance : instances) {
                 Map<String, String> metadata = instance.getMetadata();
                 String serviceId = instance.getServiceId().toLowerCase();
-                String serviceType = metadata.get(DiscoveryMetaDataConstant.SPRING_APPLICATION_TYPE);
+                String serviceType = InstanceEntityWrapper.getServiceType(metadata);
                 for (ServiceType type : types) {
                     if (StringUtils.equals(serviceType, type.toString())) {
                         if (!serviceList.contains(serviceId)) {
                             serviceList.add(serviceId);
+                        }
+                    }
+                }
+            }
+        }
+
+        return serviceList;
+    }
+
+    @Override
+    public List<String> getServiceList(String group, List<ServiceType> types) {
+        List<String> serviceList = new ArrayList<String>();
+        List<String> services = getServices();
+        for (String service : services) {
+            List<ServiceInstance> instances = getInstances(service);
+            for (ServiceInstance instance : instances) {
+                Map<String, String> metadata = instance.getMetadata();
+                String serviceGroup = InstanceEntityWrapper.getGroup(metadata);
+                if (StringUtils.equals(serviceGroup, group)) {
+                    String serviceId = instance.getServiceId().toLowerCase();
+                    String serviceType = InstanceEntityWrapper.getServiceType(metadata);
+                    for (ServiceType type : types) {
+                        if (StringUtils.equals(serviceType, type.toString())) {
+                            if (!serviceList.contains(serviceId)) {
+                                serviceList.add(serviceId);
+                            }
                         }
                     }
                 }
@@ -147,7 +171,7 @@ public class ServiceResourceImpl implements ServiceResource {
             for (ServiceInstance instance : instances) {
                 Map<String, String> metadata = instance.getMetadata();
                 String serviceId = instance.getServiceId().toLowerCase();
-                String serviceType = metadata.get(DiscoveryMetaDataConstant.SPRING_APPLICATION_TYPE);
+                String serviceType = InstanceEntityWrapper.getServiceType(metadata);
                 if (StringUtils.equals(serviceType, ServiceType.GATEWAY.toString())) {
                     if (!gatewayList.contains(serviceId)) {
                         gatewayList.add(serviceId);
@@ -168,8 +192,8 @@ public class ServiceResourceImpl implements ServiceResource {
             for (ServiceInstance instance : instances) {
                 Map<String, String> metadata = instance.getMetadata();
                 String serviceId = instance.getServiceId().toLowerCase();
-                String serviceType = metadata.get(DiscoveryMetaDataConstant.SPRING_APPLICATION_TYPE);
-                String gatewayType = metadata.get(DiscoveryMetaDataConstant.SPRING_APPLICATION_GATEWAY_TYPE);
+                String serviceType = InstanceEntityWrapper.getServiceType(metadata);
+                String gatewayType = InstanceEntityWrapper.getGatewayType(metadata);
                 if (StringUtils.equals(serviceType, ServiceType.GATEWAY.toString())) {
                     for (GatewayType type : types) {
                         if (StringUtils.equals(gatewayType, type.toString())) {
@@ -201,22 +225,38 @@ public class ServiceResourceImpl implements ServiceResource {
         List<InstanceEntity> instanceEntityList = new ArrayList<InstanceEntity>(instances.size());
         for (ServiceInstance instance : instances) {
             Map<String, String> metadata = instance.getMetadata();
+            String plugin = InstanceEntityWrapper.getPlugin(metadata);
+            String group = InstanceEntityWrapper.getGroup(metadata);
+            String serviceType = InstanceEntityWrapper.getServiceType(metadata);
             String serviceId = instance.getServiceId().toLowerCase();
-            String serviceType = metadata.get(DiscoveryMetaDataConstant.SPRING_APPLICATION_TYPE);
-            String version = metadata.get(DiscoveryConstant.VERSION);
-            String region = metadata.get(DiscoveryConstant.REGION);
-            String environment = metadata.get(DiscoveryConstant.ENVIRONMENT);
-            String zone = metadata.get(DiscoveryConstant.ZONE);
+            String serviceAppId = InstanceEntityWrapper.getServiceAppId(metadata);
+            String serviceUUId = InstanceEntityWrapper.getServiceUUId(metadata);
+            String version = InstanceEntityWrapper.getVersion(metadata);
+            String region = InstanceEntityWrapper.getRegion(metadata);
+            String environment = InstanceEntityWrapper.getEnvironment(metadata);
+            String zone = InstanceEntityWrapper.getZone(metadata);
+            boolean active = InstanceEntityWrapper.isActive(metadata);
+            String protocol = InstanceEntityWrapper.getProtocol(metadata);
+            String contextPath = InstanceEntityWrapper.getContextPath(metadata);
+            String formatContextPath = InstanceEntityWrapper.getFormatContextPath(metadata);
             String host = instance.getHost();
             int port = instance.getPort();
 
             InstanceEntity instanceEntity = new InstanceEntity();
+            instanceEntity.setPlugin(plugin);
+            instanceEntity.setGroup(group);
             instanceEntity.setServiceType(serviceType);
             instanceEntity.setServiceId(serviceId);
+            instanceEntity.setServiceAppId(serviceAppId);
+            instanceEntity.setServiceUUId(serviceUUId);
             instanceEntity.setVersion(version);
             instanceEntity.setRegion(region);
             instanceEntity.setEnvironment(environment);
             instanceEntity.setZone(zone);
+            instanceEntity.setActive(active);
+            instanceEntity.setProtocol(protocol);
+            instanceEntity.setContextPath(contextPath);
+            instanceEntity.setFormatContextPath(formatContextPath);
             instanceEntity.setHost(host);
             instanceEntity.setPort(port);
             instanceEntity.setMetadata(metadata);
@@ -235,8 +275,8 @@ public class ServiceResourceImpl implements ServiceResource {
             List<InstanceEntity> instanceEntityList = getInstanceList(service);
             if (CollectionUtils.isNotEmpty(groups)) {
                 for (InstanceEntity instance : instanceEntityList) {
-                    String plugin = InstanceEntityWrapper.getPlugin(instance);
-                    String group = InstanceEntityWrapper.getGroup(instance);
+                    String plugin = instance.getPlugin();
+                    String group = instance.getGroup();
                     if (StringUtils.isNotEmpty(plugin) && groups.contains(group)) {
                         List<InstanceEntity> instanceList = instanceMap.get(service);
                         if (instanceList == null) {

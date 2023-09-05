@@ -19,18 +19,16 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.nepxion.discovery.common.constant.DiscoveryConstant;
 import com.nepxion.discovery.common.entity.RuleEntity;
+import com.nepxion.discovery.common.entity.SubscriptionType;
 import com.nepxion.discovery.plugin.configcenter.loader.LocalConfigLoader;
 import com.nepxion.discovery.plugin.configcenter.loader.RemoteConfigLoader;
 import com.nepxion.discovery.plugin.framework.adapter.PluginAdapter;
-import com.nepxion.discovery.plugin.framework.context.PluginContextAware;
 import com.nepxion.discovery.plugin.framework.event.PluginEventWapper;
+import com.nepxion.discovery.plugin.framework.event.RuleFailureEvent;
 import com.nepxion.discovery.plugin.framework.parser.PluginConfigParser;
 
 public class ConfigInitializer {
     private static final Logger LOG = LoggerFactory.getLogger(ConfigInitializer.class);
-
-    @Autowired
-    private PluginContextAware pluginContextAware;
 
     @Autowired
     private PluginAdapter pluginAdapter;
@@ -52,15 +50,6 @@ public class ConfigInitializer {
 
     @PostConstruct
     public void initialize() {
-        Boolean registerControlEnabled = pluginContextAware.isRegisterControlEnabled();
-        Boolean discoveryControlEnabled = pluginContextAware.isDiscoveryControlEnabled();
-
-        if (!registerControlEnabled && !discoveryControlEnabled) {
-            LOG.info("Register and Discovery controls are all disabled, ignore to initialize");
-
-            return;
-        }
-
         LOG.info("------------- Load Discovery Config --------------");
 
         String[] remoteConfigList = getRemoteConfigList();
@@ -74,6 +63,8 @@ public class ConfigInitializer {
                     pluginAdapter.setDynamicPartialRule(ruleEntity);
                 } catch (Exception e) {
                     LOG.error("Initialize partial remote config failed", e);
+
+                    pluginEventWapper.fireRuleFailure(new RuleFailureEvent(SubscriptionType.PARTIAL, partialRemoteConfig, e));
                 }
             }
 
@@ -86,6 +77,8 @@ public class ConfigInitializer {
                     pluginAdapter.setDynamicGlobalRule(ruleEntity);
                 } catch (Exception e) {
                     LOG.error("Initialize global remote config failed", e);
+
+                    pluginEventWapper.fireRuleFailure(new RuleFailureEvent(SubscriptionType.GLOBAL, globalRemoteConfig, e));
                 }
             }
         }

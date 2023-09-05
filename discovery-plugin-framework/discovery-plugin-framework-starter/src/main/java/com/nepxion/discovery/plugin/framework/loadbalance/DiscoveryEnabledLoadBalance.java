@@ -9,8 +9,12 @@ package com.nepxion.discovery.plugin.framework.loadbalance;
  * @version 1.0
  */
 
+import java.util.List;
+
 import com.netflix.loadbalancer.Server;
 
 public interface DiscoveryEnabledLoadBalance {
+    void filter(List<? extends Server> servers);
+
     boolean apply(Server server);
 }

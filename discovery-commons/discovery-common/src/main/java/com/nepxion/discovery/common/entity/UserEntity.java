@@ -9,12 +9,16 @@ package com.nepxion.discovery.common.entity;
  * @version 1.0
  */
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class UserEntity {
+public class UserEntity implements Serializable {
+    private static final long serialVersionUID = 7873578695343188087L;
+
     private String userId;
     private String password;
 

@@ -1,22 +1,10 @@
 {
 	"properties": [
 		{
-			"name": "spring.application.register.control.enabled",
-			"type": "java.lang.Boolean",
-			"defaultValue": true,
-			"description": "Whether register control is enabled."
-		},
-		{
-			"name": "spring.application.discovery.control.enabled",
-			"type": "java.lang.Boolean",
-			"defaultValue": true,
-			"description": "Whether discovery control is enabled."
-		},
-		{
-			"name": "spring.application.config.rest.control.enabled",
-			"type": "java.lang.Boolean",
-			"defaultValue": true,
-			"description": "Whether config rest control is enabled."
+			"name": "spring.application.weight.random.type",
+			"type": "java.lang.String",
+			"defaultValue": "MapWeightRandom",
+			"description": "Weight random type, it can be MapWeightRandom or ArrayWeightRandom."
 		},
 		{
 			"name": "spring.application.config.format",
@@ -79,24 +67,6 @@
 			"description": "Git version key, it can be git.commit.id or git.build.version or another."
 		},
 		{
-			"name": "spring.application.no.servers.retry.enabled",
-			"type": "java.lang.Boolean",
-			"defaultValue": false,
-			"description": "Whether no server retry is enabled."
-		},
-		{
-			"name": "spring.application.no.servers.retry.times",
-			"type": "java.lang.Integer",
-			"defaultValue": 5,
-			"description": "No servers for retry times."
-		},
-		{
-			"name": "spring.application.no.servers.retry.await.time",
-			"type": "java.lang.Integer",
-			"defaultValue": 2000,
-			"description": "No servers for retry await time."
-		},
-		{
 			"name": "spring.application.no.servers.notify.enabled",
 			"type": "java.lang.Boolean",
 			"defaultValue": false,
@@ -109,28 +79,22 @@
 			"description": "Whether parameter event onstart is enabled."
 		},
 		{
-			"name": "swagger.service.enabled",
+			"name": "swagger.enabled",
 			"type": "java.lang.Boolean",
 			"defaultValue": true,
-			"description": "Whether swagger service is enabled."
+			"description": "Whether swagger is enabled."
 		},
 		{
-			"name": "swagger.service.base.group",
-			"type": "java.lang.String",
-			"defaultValue": "Nepxion Discovery",
-			"description": "Swagger service base group."
-		},
-		{
-			"name": "swagger.service.scan.group",
+			"name": "swagger.service.group",
 			"type": "java.lang.String",
 			"defaultValue": "",
-			"description": "Swagger service scan group defined outside."
+			"description": "Swagger service group defined outside."
 		},
 		{
-			"name": "swagger.service.scan.packages",
+			"name": "swagger.service.packages",
 			"type": "java.lang.String",
 			"defaultValue": "",
-			"description": "Swagger service scan packages defined outside."
+			"description": "Swagger service packages defined outside."
 		},
 		{
 			"name": "swagger.service.description",
@@ -140,7 +104,6 @@
 		{
 			"name": "swagger.service.version",
 			"type": "java.lang.String",
-			"defaultValue": "discovery framework version value",
 			"description": "Swagger service version."
 		},
 		{
@@ -176,7 +139,7 @@
 		{
 			"name": "swagger.service.termsOfService.url",
 			"type": "java.lang.String",
-			"defaultValue": "http://www.nepxion.com",
+			"defaultValue": "http://nepxion.com/discovery",
 			"description": "Swagger service termsOfService url."
 		}
 	]

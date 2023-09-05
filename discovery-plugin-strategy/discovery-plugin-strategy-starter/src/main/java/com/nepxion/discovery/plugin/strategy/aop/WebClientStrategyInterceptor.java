@@ -19,6 +19,8 @@ import java.util.Map.Entry;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -34,24 +36,15 @@ import com.nepxion.discovery.plugin.strategy.context.StrategyContextHolder;
 import com.nepxion.discovery.plugin.strategy.util.StrategyUtil;
 
 public class WebClientStrategyInterceptor extends AbstractStrategyInterceptor implements ExchangeFilterFunction {
+    private static final Logger LOG = LoggerFactory.getLogger(WebClientStrategyInterceptor.class);
+
     @Autowired
     protected StrategyContextHolder strategyContextHolder;
 
-    // WebClient核心策略Header是否传递。当全局订阅启动时，可以关闭核心策略Header传递，这样可以节省传递数据的大小，一定程度上可以提升性能。核心策略Header，包含如下
-    // 1. n-d-version
-    // 2. n-d-region
-    // 3. n-d-address
-    // 4. n-d-version-weight
-    // 5. n-d-region-weight
-    // 6. n-d-id-blacklist
-    // 7. n-d-address-blacklist
-    // 8. n-d-env (不属于蓝绿灰度范畴的Header，只要外部传入就会全程传递)
+    // WebClient核心策略Header是否传递。当全局订阅启动时，可以关闭核心策略Header传递，这样可以节省传递数据的大小，一定程度上可以提升性能
+    // 核心策略Header指n-d-开头的Header（不包括n-d-env，因为环境路由隔离，必须传递该Header），不包括n-d-service开头的Header
     @Value("${" + StrategyConstant.SPRING_APPLICATION_STRATEGY_WEB_CLIENT_CORE_HEADER_TRANSMISSION_ENABLED + ":true}")
     protected Boolean webClientCoreHeaderTransmissionEnabled;
-
-    public WebClientStrategyInterceptor(String contextRequestHeaders, String businessRequestHeaders) {
-        super(contextRequestHeaders, businessRequestHeaders);
-    }
 
     @Override
     public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
@@ -84,10 +77,22 @@ public class WebClientStrategyInterceptor extends AbstractStrategyInterceptor im
         }
         requestBuilder.header(DiscoveryConstant.N_D_SERVICE_ID, pluginAdapter.getServiceId());
         requestBuilder.header(DiscoveryConstant.N_D_SERVICE_ADDRESS, pluginAdapter.getHost() + ":" + pluginAdapter.getPort());
-        requestBuilder.header(DiscoveryConstant.N_D_SERVICE_VERSION, pluginAdapter.getVersion());
-        requestBuilder.header(DiscoveryConstant.N_D_SERVICE_REGION, pluginAdapter.getRegion());
-        requestBuilder.header(DiscoveryConstant.N_D_SERVICE_ENVIRONMENT, pluginAdapter.getEnvironment());
-        requestBuilder.header(DiscoveryConstant.N_D_SERVICE_ZONE, pluginAdapter.getZone());
+        String version = pluginAdapter.getVersion();
+        if (StringUtils.isNotEmpty(version) && !StringUtils.equals(version, DiscoveryConstant.DEFAULT)) {
+            requestBuilder.header(DiscoveryConstant.N_D_SERVICE_VERSION, version);
+        }
+        String region = pluginAdapter.getRegion();
+        if (StringUtils.isNotEmpty(region) && !StringUtils.equals(region, DiscoveryConstant.DEFAULT)) {
+            requestBuilder.header(DiscoveryConstant.N_D_SERVICE_REGION, region);
+        }
+        String environment = pluginAdapter.getEnvironment();
+        if (StringUtils.isNotEmpty(environment) && !StringUtils.equals(environment, DiscoveryConstant.DEFAULT)) {
+            requestBuilder.header(DiscoveryConstant.N_D_SERVICE_ENVIRONMENT, environment);
+        }
+        String zone = pluginAdapter.getZone();
+        if (StringUtils.isNotEmpty(zone) && !StringUtils.equals(zone, DiscoveryConstant.DEFAULT)) {
+            requestBuilder.header(DiscoveryConstant.N_D_SERVICE_ZONE, zone);
+        }
     }
 
     // 处理外部Header的转发，即外部服务传递过来的Header，中继转发到下游服务去
@@ -150,6 +155,48 @@ public class WebClientStrategyInterceptor extends AbstractStrategyInterceptor im
                     requestBuilder.header(DiscoveryConstant.N_D_REGION_WEIGHT, routeRegionWeight);
                 }
             }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_VERSION_PREFER))) {
+                String routeVersionPrefer = strategyContextHolder.getRouteVersionPrefer();
+                if (StringUtils.isNotEmpty(routeVersionPrefer)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_VERSION_PREFER, routeVersionPrefer);
+                }
+            }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_VERSION_FAILOVER))) {
+                String routeVersionFailover = strategyContextHolder.getRouteVersionFailover();
+                if (StringUtils.isNotEmpty(routeVersionFailover)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_VERSION_FAILOVER, routeVersionFailover);
+                }
+            }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_REGION_TRANSFER))) {
+                String routeRegionTransfer = strategyContextHolder.getRouteRegionTransfer();
+                if (StringUtils.isNotEmpty(routeRegionTransfer)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_REGION_TRANSFER, routeRegionTransfer);
+                }
+            }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_REGION_FAILOVER))) {
+                String routeRegionFailover = strategyContextHolder.getRouteRegionFailover();
+                if (StringUtils.isNotEmpty(routeRegionFailover)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_REGION_FAILOVER, routeRegionFailover);
+                }
+            }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_ENVIRONMENT_FAILOVER))) {
+                String routeEnvironmentFailover = strategyContextHolder.getRouteEnvironmentFailover();
+                if (StringUtils.isNotEmpty(routeEnvironmentFailover)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_ENVIRONMENT_FAILOVER, routeEnvironmentFailover);
+                }
+            }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_ZONE_FAILOVER))) {
+                String routeZoneFailover = strategyContextHolder.getRouteZoneFailover();
+                if (StringUtils.isNotEmpty(routeZoneFailover)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_ZONE_FAILOVER, routeZoneFailover);
+                }
+            }
+            if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_ADDRESS_FAILOVER))) {
+                String routeAddressFailover = strategyContextHolder.getRouteAddressFailover();
+                if (StringUtils.isNotEmpty(routeAddressFailover)) {
+                    requestBuilder.header(DiscoveryConstant.N_D_ADDRESS_FAILOVER, routeAddressFailover);
+                }
+            }
             if (CollectionUtils.isEmpty(headers.get(DiscoveryConstant.N_D_ID_BLACKLIST))) {
                 String routeIdBlacklist = strategyContextHolder.getRouteIdBlacklist();
                 if (StringUtils.isNotEmpty(routeIdBlacklist)) {
@@ -170,7 +217,9 @@ public class WebClientStrategyInterceptor extends AbstractStrategyInterceptor im
             return;
         }
 
-        System.out.println("------ WebClient Intercept Output Header Information -------");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        stringBuilder.append("------ WebClient Intercept Output Header Information -------").append("\n");
         HttpHeaders headers = request.headers();
         for (Iterator<Entry<String, List<String>>> iterator = headers.entrySet().iterator(); iterator.hasNext();) {
             Entry<String, List<String>> header = iterator.next();
@@ -179,14 +228,20 @@ public class WebClientStrategyInterceptor extends AbstractStrategyInterceptor im
             if (isHeaderContains) {
                 List<String> headerValue = header.getValue();
 
-                System.out.println(headerName + "=" + headerValue);
+                stringBuilder.append(headerName + "=" + headerValue).append("\n");
             }
         }
-        System.out.println("------------------------------------------------------------");
+        stringBuilder.append("------------------------------------------------------------");
+        LOG.info(stringBuilder.toString());
     }
 
     @Override
     protected InterceptorType getInterceptorType() {
         return InterceptorType.WEB_CLIENT;
+    }
+
+    @Override
+    protected Logger getInterceptorLogger() {
+        return LOG;
     }
 }

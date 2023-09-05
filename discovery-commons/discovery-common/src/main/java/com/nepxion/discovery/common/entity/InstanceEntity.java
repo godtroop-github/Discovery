@@ -20,15 +20,39 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class InstanceEntity implements Serializable {
     private static final long serialVersionUID = -3001191508072178378L;
 
+    private String plugin;
+    private String group;
     private String serviceType;
     private String serviceId;
+    private String serviceAppId;
+    private String serviceUUId;
     private String version;
     private String region;
     private String environment;
     private String zone;
+    private boolean active;
+    private String protocol;
+    private String contextPath;
+    private String formatContextPath;
     private String host;
     private int port;
     private Map<String, String> metadata;
+
+    public String getPlugin() {
+        return plugin;
+    }
+
+    public void setPlugin(String plugin) {
+        this.plugin = plugin;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
 
     public String getServiceType() {
         return serviceType;
@@ -44,6 +68,22 @@ public class InstanceEntity implements Serializable {
 
     public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getServiceAppId() {
+        return serviceAppId;
+    }
+
+    public void setServiceAppId(String serviceAppId) {
+        this.serviceAppId = serviceAppId;
+    }
+
+    public String getServiceUUId() {
+        return serviceUUId;
+    }
+
+    public void setServiceUUId(String serviceUUId) {
+        this.serviceUUId = serviceUUId;
     }
 
     public String getVersion() {
@@ -76,6 +116,38 @@ public class InstanceEntity implements Serializable {
 
     public void setZone(String zone) {
         this.zone = zone;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
+    }
+
+    public String getFormatContextPath() {
+        return formatContextPath;
+    }
+
+    public void setFormatContextPath(String formatContextPath) {
+        this.formatContextPath = formatContextPath;
     }
 
     public String getHost() {

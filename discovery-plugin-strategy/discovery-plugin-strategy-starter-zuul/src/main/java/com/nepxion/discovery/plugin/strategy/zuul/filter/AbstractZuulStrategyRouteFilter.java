@@ -42,15 +42,8 @@ public abstract class AbstractZuulStrategyRouteFilter extends ZuulStrategyRouteF
     @Value("${" + ZuulStrategyConstant.SPRING_APPLICATION_STRATEGY_ZUUL_ORIGINAL_HEADER_IGNORED + ":true}")
     protected Boolean zuulOriginalHeaderIgnored;
 
-    // Zuul上核心策略Header是否传递。当全局订阅启动时，可以关闭核心策略Header传递，这样可以节省传递数据的大小，一定程度上可以提升性能。核心策略Header，包含如下
-    // 1. n-d-version
-    // 2. n-d-region
-    // 3. n-d-address
-    // 4. n-d-version-weight
-    // 5. n-d-region-weight
-    // 6. n-d-id-blacklist
-    // 7. n-d-address-blacklist
-    // 8. n-d-env (不属于蓝绿灰度范畴的Header，只要外部传入就会全程传递)
+    // Zuul上核心策略Header是否传递。当全局订阅启动时，可以关闭核心策略Header传递，这样可以节省传递数据的大小，一定程度上可以提升性能
+    // 核心策略Header指n-d-开头的Header（不包括n-d-env，因为环境路由隔离，必须传递该Header），不包括n-d-service开头的Header    
     @Value("${" + ZuulStrategyConstant.SPRING_APPLICATION_STRATEGY_ZUUL_CORE_HEADER_TRANSMISSION_ENABLED + ":true}")
     protected Boolean zuulCoreHeaderTransmissionEnabled;
 
@@ -113,10 +106,22 @@ public abstract class AbstractZuulStrategyRouteFilter extends ZuulStrategyRouteF
         }
         ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_ID, pluginAdapter.getServiceId(), false);
         ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_ADDRESS, pluginAdapter.getHost() + ":" + pluginAdapter.getPort(), false);
-        ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_VERSION, pluginAdapter.getVersion(), false);
-        ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_REGION, pluginAdapter.getRegion(), false);
-        ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_ENVIRONMENT, pluginAdapter.getEnvironment(), false);
-        ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_ZONE, pluginAdapter.getZone(), false);
+        String version = pluginAdapter.getVersion();
+        if (StringUtils.isNotEmpty(version) && !StringUtils.equals(version, DiscoveryConstant.DEFAULT)) {
+            ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_VERSION, version, false);
+        }
+        String region = pluginAdapter.getRegion();
+        if (StringUtils.isNotEmpty(region) && !StringUtils.equals(region, DiscoveryConstant.DEFAULT)) {
+            ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_REGION, region, false);
+        }
+        String environment = pluginAdapter.getEnvironment();
+        if (StringUtils.isNotEmpty(environment) && !StringUtils.equals(environment, DiscoveryConstant.DEFAULT)) {
+            ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_ENVIRONMENT, environment, false);
+        }
+        String zone = pluginAdapter.getZone();
+        if (StringUtils.isNotEmpty(zone) && !StringUtils.equals(zone, DiscoveryConstant.DEFAULT)) {
+            ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_SERVICE_ZONE, zone, false);
+        }
     }
 
     // 处理外部Header的转发，即外部服务传递过来的Header，中继转发到下游服务去
@@ -126,11 +131,22 @@ public abstract class AbstractZuulStrategyRouteFilter extends ZuulStrategyRouteF
             ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_ENVIRONMENT, routeEnvironment, false);
         }
 
+        // 外置Header预先塞入
+        Map<String, String> externalHeaderMap = getExternalHeaderMap();
+        if (MapUtils.isNotEmpty(externalHeaderMap)) {
+            for (Map.Entry<String, String> entry : externalHeaderMap.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+
+                ZuulStrategyFilterResolver.setHeader(context, key, value, zuulHeaderPriority);
+            }
+        }
+
         if (zuulCoreHeaderTransmissionEnabled) {
             // 内置Header预先塞入
-            Map<String, String> headerMap = strategyWrapper.getHeaderMap();
-            if (MapUtils.isNotEmpty(headerMap)) {
-                for (Map.Entry<String, String> entry : headerMap.entrySet()) {
+            Map<String, String> internalHeaderMap = strategyWrapper.getHeaderMap();
+            if (MapUtils.isNotEmpty(internalHeaderMap)) {
+                for (Map.Entry<String, String> entry : internalHeaderMap.entrySet()) {
                     String key = entry.getKey();
                     String value = entry.getValue();
 
@@ -143,6 +159,13 @@ public abstract class AbstractZuulStrategyRouteFilter extends ZuulStrategyRouteF
             String routeAddress = getRouteAddress();
             String routeVersionWeight = getRouteVersionWeight();
             String routeRegionWeight = getRouteRegionWeight();
+            String routeVersionPrefer = getRouteVersionPrefer();
+            String routeVersionFailover = getRouteVersionFailover();
+            String routeRegionTransfer = getRouteRegionTransfer();
+            String routeRegionFailover = getRouteRegionFailover();
+            String routeEnvironmentFailover = getRouteEnvironmentFailover();
+            String routeZoneFailover = getRouteZoneFailover();
+            String routeAddressFailover = getRouteAddressFailover();
             String routeIdBlacklist = getRouteIdBlacklist();
             String routeAddressBlacklist = getRouteAddressBlacklist();
 
@@ -171,6 +194,41 @@ public abstract class AbstractZuulStrategyRouteFilter extends ZuulStrategyRouteF
             } else {
                 ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_REGION_WEIGHT, zuulHeaderPriority, zuulOriginalHeaderIgnored);
             }
+            if (StringUtils.isNotEmpty(routeVersionPrefer)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_VERSION_PREFER, routeVersionPrefer, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_VERSION_PREFER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
+            if (StringUtils.isNotEmpty(routeVersionFailover)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_VERSION_FAILOVER, routeVersionFailover, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_VERSION_FAILOVER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
+            if (StringUtils.isNotEmpty(routeRegionTransfer)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_REGION_TRANSFER, routeRegionTransfer, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_REGION_TRANSFER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
+            if (StringUtils.isNotEmpty(routeRegionFailover)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_REGION_FAILOVER, routeRegionFailover, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_REGION_FAILOVER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
+            if (StringUtils.isNotEmpty(routeEnvironmentFailover)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_ENVIRONMENT_FAILOVER, routeEnvironmentFailover, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ENVIRONMENT_FAILOVER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
+            if (StringUtils.isNotEmpty(routeZoneFailover)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_ZONE_FAILOVER, routeZoneFailover, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ZONE_FAILOVER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
+            if (StringUtils.isNotEmpty(routeAddressFailover)) {
+                ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_ADDRESS_FAILOVER, routeAddressFailover, zuulHeaderPriority);
+            } else {
+                ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ADDRESS_FAILOVER, zuulHeaderPriority, zuulOriginalHeaderIgnored);
+            }
             if (StringUtils.isNotEmpty(routeIdBlacklist)) {
                 ZuulStrategyFilterResolver.setHeader(context, DiscoveryConstant.N_D_ID_BLACKLIST, routeIdBlacklist, zuulHeaderPriority);
             } else {
@@ -188,9 +246,20 @@ public abstract class AbstractZuulStrategyRouteFilter extends ZuulStrategyRouteF
             ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ADDRESS);
             ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_VERSION_WEIGHT);
             ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_REGION_WEIGHT);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_VERSION_PREFER);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_VERSION_FAILOVER);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_REGION_TRANSFER);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_REGION_FAILOVER);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ENVIRONMENT_FAILOVER);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ZONE_FAILOVER);
+            ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ADDRESS_FAILOVER);
             ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ID_BLACKLIST);
             ZuulStrategyFilterResolver.ignoreHeader(context, DiscoveryConstant.N_D_ADDRESS_BLACKLIST);
         }
+    }
+
+    public Map<String, String> getExternalHeaderMap() {
+        return null;
     }
 
     public PluginAdapter getPluginAdapter() {
